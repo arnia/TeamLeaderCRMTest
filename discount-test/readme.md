@@ -63,6 +63,8 @@ After this you can send request orders in your browser to the following endpoint
 ```bash
 http://discount-test/api/discount
 ```
-To test the order requests i've used the Postman application on my local you have [here](/postman_screens/) some print screens
+To test the order requests i've used the Postman application on my local you have [here](postman_screens/) some print screens
+
+Unit test ar found in the folder /tests/Unit/DiscountTest.php you can run them with PHPUnit.
 
 

@@ -5,6 +5,7 @@ use App\Products;
 
 class CategoryDiscount
 {
+    const CHEAPEST_DISCOUNT = 20;
 
     private $items;
 
@@ -22,18 +23,20 @@ class CategoryDiscount
     {
 
         $categoriesQuantities = $this->getProductCategoryIds($this->items);
-        $discountMessage      = '';
-
+        $discounts = [];
         if ($this->getTotalQuantityByCategory($categoriesQuantities, 2) >= 5) {
-            $discountMessage = "Got a sixth product for free from category 'Switches' \n\r";
+            $discounts[] = ['discount-description' => "Got a sixth product for free from category 'Switches'",
+            'discount-value' => $this->getProductFromCategory($categoriesQuantities, 2)['unit-price']];
         }
 
         if ($this->getTotalQuantityByCategory($categoriesQuantities, 1) >= 2) {
-            $discountMessage = $discountMessage . "Got a 20% discount on Product ID: ".
-                $this->getCheapestProductFromCategory($categoriesQuantities, 1) . " from category 'Tools' \n\r";
+            $cheapestProduct = $this->getCheapestProductFromCategory($categoriesQuantities, 1);
+            $discountValue = number_format((float)($cheapestProduct['unit-price'] * (self::CHEAPEST_DISCOUNT / 100)), 2, '.', '');
+            $discounts[] = [ 'discount-description' =>"Got a 20% discount on Product ID: ". $cheapestProduct['product-id'] . " from category 'Tools'",
+                  'discount-value' => $discountValue];
         }
 
-        return ($discountMessage != '') ? $discountMessage : false;
+        return (!empty($discounts)) ? response()->json($discounts) : false;
     }
 
     /**
@@ -87,8 +90,28 @@ class CategoryDiscount
                 $products[$category['product-id']] = $category['unit-price'];
             }
         }
-
         $productId = array_keys($products, min($products))[0];
-        return $productId;
+        $product['product-id'] = $productId;
+        $product['unit-price'] = $products[$productId];
+        return $product;
+    }
+
+    /**
+     * Get  product from a category and return his info
+     *
+     * @param $categoriesQuantities
+     * @param $categoryId
+     * @return mixed
+     */
+    private function getProductFromCategory($categoriesQuantities, $categoryId)
+    {
+        foreach ($categoriesQuantities as $category) {
+            if ($category['category'] == $categoryId) {
+                $product = $category;
+                break;
+            }
+        }
+
+        return $product;
     }
 }

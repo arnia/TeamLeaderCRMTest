@@ -27,6 +27,6 @@ class DiscountController extends Controller
             return $categoryDiscount->getCategoryDiscount();
         }
 
-        return 'Your order got no discount.';
+        return response()->json(['discount-description' => 'Your order got no discount.', 'discount-value' => 0]);
     }
 }

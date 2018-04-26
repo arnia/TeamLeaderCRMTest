@@ -20,6 +20,7 @@ class TotalDiscount
         $discountTotal = $this->total * (self::DISCOUNT / 100);
         $discountedPrice = $this->total - $discountTotal;
 
-        return "You got a " . self::DISCOUNT . "% discount and saved " . $discountTotal . ". Your order will now cost " . $discountedPrice . ".";
+        return response()->json(['discount-description' => "You got a " . self::DISCOUNT . "% discount and saved " . $discountTotal . ". Your order will now cost " . $discountedPrice . ".",
+        'discount-value' => $discountTotal]);
     }
 }

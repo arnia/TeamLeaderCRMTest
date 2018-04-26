@@ -65,4 +65,4 @@ http://discount-test/api/discount
 ```
 To test the order requests i've used the Postman application on my local you have [here](/discount-test/postman_screens/) some print screens
 
-
+Unit test ar found in the folder /tests/Unit/DiscountTest.php you can run them with PHPUnit.

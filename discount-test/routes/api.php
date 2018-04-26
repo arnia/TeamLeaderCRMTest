@@ -13,4 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('api')->post('discount', 'DiscountController@getDiscount');
+Route::middleware('api')->post('discount', 'DiscountController@getDiscount')->name('discount');
